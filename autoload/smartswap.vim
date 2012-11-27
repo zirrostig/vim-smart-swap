@@ -42,7 +42,7 @@ function! s:smartRemoveSwap()
     "Check diff of buffer and swap, this is also taken from Recover.vim
     let tempf = tempname()
     let cmd = printf("vim -u NONE -U NONE -N -es -r %s -c ':w %s|:q!' && diff %s %s",
-                \ shellescape(v:swapname), tempf, filename, tempf)
+                \ shellescape(v:swapname), tempf, s:filename, tempf)
     call system(cmd)
     let retCode = !v:shell_error
     call delete(tempf)
