@@ -34,6 +34,8 @@ function! s:smartRemoveSwap()
     "Get the modification times for both the swap file and opened file
     let swapModTime = getftime(s:swapname)
     let fileModTime = getftime(s:filename)
+    echo "FileMod = " . fileModTime
+    echo "SwapMod = " . swapModTime
     if swapModTime <= fileModTime
         "let vim handle deleting of the swap file
         let v:swapchoice = 'd'
