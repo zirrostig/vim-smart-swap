@@ -28,26 +28,26 @@ function! s:smartRemoveSwap()
         return
     endif
 
-    let swapname = shellescape(s:swapName())
-    let filename = shellescape(expand('%:p'))
+    let s:swapname = shellescape(s:swapName())
+    let s:filename = shellescape(expand('%:p'))
 
     "Get the modification times for both the swap file and opened file
-    let swapModTime = getftime(name)
-    let fileModTime = getftime(filename)
+    let swapModTime = getftime(s:swapname)
+    let fileModTime = getftime(s:filename)
     if swapModTime <= fileModTime
         "let vim handle deleting of the swap file
         let v:swapchoice = 'd'
     endif
 
     "Check diff of buffer and swap, this is also taken from Recover.vim
-    let temp = tempname()
+    let tempf = tempname()
     let cmd = printf("vim -u NONE -U NONE -N -es -r %s -c ':w %s|:q!' && diff %s %s",
-                \ shellescape(v:swapname), temp, filename, temp)
+                \ shellescape(v:swapname), tempf, filename, tempf)
     call system(cmd)
     let retCode = !v:shell_error
-    call delete(temp)
+    call delete(tempf)
 
-    if delete
+    if retCode
         let v:swapchoice = 'd'
     endif
 endfunction
