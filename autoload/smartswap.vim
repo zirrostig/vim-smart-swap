@@ -28,32 +28,30 @@ function! s:smartRemoveSwap()
         return
     endif
 
-    let s:swapname = shellescape(s:swapName())
-    let s:filename = shellescape(expand('%:p'))
+    let s:sname = shellescape(s:swapName())
+    let s:fname = shellescape(expand('%:p'))
 
     "Get the modification times for both the swap file and opened file
-    let swapModTime = getftime(s:swapname)
-    let fileModTime = getftime(s:filename)
-    echo "FileMod = " . fileModTime
-    echo "SwapMod = " . swapModTime
-    if swapModTime <= fileModTime
+    let swapModTime = getftime(s:sname)
+    let fileModTime = getftime(s:fname)
+    if swapModTime >= fileModTime
         "let vim handle deleting of the swap file
         let v:swapchoice = 'd'
         echo 'Swap is older than buffer, deleting swap'
     endif
 
-    "Check diff of buffer and swap, this is also taken from Recover.vim
-    let tempf = tempname()
-    let cmd = printf("vim -u NONE -U NONE -N -es -r %s -c ':w %s|:q!' && diff %s %s",
-                \ shellescape(v:swapname), tempf, s:filename, tempf)
-    call system(cmd)
-    let retCode = !v:shell_error
-    call delete(tempf)
-
-    if retCode
-        let v:swapchoice = 'd'
-        echo 'Swap and buffer are the same, deleteing old swap'
-    endif
+"    "Check diff of buffer and swap, this is also taken from Recover.vim
+"    let tempf = tempname()
+"    let cmd = printf("vim -u NONE -U NONE -N -es -r %s -c ':w %s|:q!' && diff %s %s",
+"                \ shellescape(v:swapname), tempf, s:fname, tempf)
+"    call system(cmd)
+"    let retCode = !v:shell_error
+"    call delete(tempf)
+"
+"    if retCode
+"        let v:swapchoice = 'd'
+"        echo 'Swap and buffer are the same, deleteing old swap'
+"    endif
 endfunction
 
 function! s:checkSwap()
