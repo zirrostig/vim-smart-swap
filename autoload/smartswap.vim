@@ -16,60 +16,82 @@ function! smartswap#main()
         au!
         "This does a smart removal of the swap file if it exists and is the
         "same or older than the file
-        au SwapExists * nested :call <sid>smartRemoveSwap()
+        au SwapExists * nested :call smartswap#SmartRemoveSwap()
         "This fixes when the above removes and shouldn't, and is effectively
         "the same as Recover.vim
-        au BufWinEnter,InsertEnter,InsertLeave,FocusGained * call <sid>checkSwap()
+        au BufWinEnter,InsertEnter,InsertLeave,FocusGained * call smartswap#CheckSwap()
     augroup END
 endfunction
 
-function! s:smartRemoveSwap()
+function! smartswap#SmartRemoveSwap()
     if !&swapfile
         return
     endif
 
-    let s:sname = shellescape(s:swapName())
-    let s:fname = shellescape(expand('%:p'))
+    call smartswap#CheckTimeStamps()
+    "if CheckTimeStamps set v:swapchoice, we're done
+    if !exists("g:swapchoice")
+        call smartswap#CheckDiff()
+    endif
+endfunction
 
+function! smartswap#CheckTimeStamps()
     "Get the modification times for both the swap file and opened file
-    let swapModTime = getftime(s:sname)
-    let fileModTime = getftime(s:fname)
-    if swapModTime >= fileModTime
+    let swapModTime = getftime(v:swapname)
+    let fileModTime = getftime(expand('%:p'))
+    if swapModTime <= fileModTime
         "let vim handle deleting of the swap file
         let v:swapchoice = 'd'
         echo 'Swap is older than buffer, deleting swap'
+        return
+    else
+        echo 'Swap is newer than buffer...'
     endif
-
-"    "Check diff of buffer and swap, this is also taken from Recover.vim
-"    let tempf = tempname()
-"    let cmd = printf("vim -u NONE -U NONE -N -es -r %s -c ':w %s|:q!' && diff %s %s",
-"                \ shellescape(v:swapname), tempf, s:fname, tempf)
-"    call system(cmd)
-"    let retCode = !v:shell_error
-"    call delete(tempf)
-"
-"    if retCode
-"        let v:swapchoice = 'd'
-"        echo 'Swap and buffer are the same, deleteing old swap'
-"    endif
 endfunction
 
-function! s:checkSwap()
+function! smartswap#CheckDiff()
+    "Check diff of buffer and swap, this is also taken from Recover.vim
+    let tempf = tempname()
+
+    "Create a temp file with the contents of the swapfile
+    let cmd = printf("vim -u NONE -U NONE -N -es -r %s -c ':wq! %s'", shellescape(v:swapname), tempf)
+    call system(cmd)
+
+    "Diff the temp with file
+    let cmd = printf("diff %s %s", shellescape(expand('%:p')), tempf)
+    call system(cmd)
+
+    "Get Return Code and delete the temp file
+    let delSwap = !v:shell_error
+    call delete(tempf)
+
+    "If diff returned 0, then delete the swap file
+    if delSwap
+        let v:swapchoice = 'd'
+        echo 'Swap and buffer are the same, deleteing old swap'
+        return
+    else
+        echo 'Swap and buffer differ...'
+    endif
+endfunction
+
+
+function! smartswap#CheckSwap()
     "Taken from Recover.vim plugin, s:CheckSwapFileExists
     "https://github.com/chrisbra/Recover.vim
     if !&swapfile
         return
     endif
 
-    let name = s:swapName()
+    let name = smartswap#SwapName()
     if !empty(name) && !filereadable(name)
         " previous SwapExists autocommand deleted our swapfile,
         " recreate it and avoid E325 Message
-        call s:resetSwap()
+        call smartswap#ResetSwap()
     endif
 endfunction
 
-function! s:swapName()
+function! smartswap#SwapName()
     "Taken from Recover.vim plugin, s:Swapname
     "https://github.com/chrisbra/Recover.vim
     silent! redir => a |silent swapname|redir end
@@ -80,7 +102,7 @@ function! s:swapName()
     endif
 endfunction
 
-function! s:resetSwap()
+function! smartswap#ResetSwap()
     "Taken from Recover.vim plugin, s:SetSwapFile()
     "https://github.com/chrisbra/Recover.vim
     if &l:swf
