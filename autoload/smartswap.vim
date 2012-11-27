@@ -28,10 +28,16 @@ function! smartswap#SmartRemoveSwap()
         return
     endif
 
-    call smartswap#CheckTimeStamps()
+    "User var if the user doesn't want to check the time stamps
+    if !exists("g:SmartSwap_CheckDate") || g:SmartSwap_CheckDate > 0
+        call smartswap#CheckTimeStamps()
+    endif
     "if CheckTimeStamps set v:swapchoice, we're done
-    if !exists("g:swapchoice")
-        call smartswap#CheckDiff()
+    "User var if the user doesn't want to check the diff state
+    if !exists("g:SmartSwap_CheckDiff") || g:SmartSwap_CheckDiff > 0
+        if !exists("g:swapchoice")
+            call smartswap#CheckDiff()
+        endif
     endif
 endfunction
 
