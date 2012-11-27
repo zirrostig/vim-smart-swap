@@ -37,6 +37,7 @@ function! s:smartRemoveSwap()
     if swapModTime <= fileModTime
         "let vim handle deleting of the swap file
         let v:swapchoice = 'd'
+        echo 'Swap is older than buffer, deleting swap'
     endif
 
     "Check diff of buffer and swap, this is also taken from Recover.vim
@@ -49,6 +50,7 @@ function! s:smartRemoveSwap()
 
     if retCode
         let v:swapchoice = 'd'
+        echo 'Swap and buffer are the same, deleteing old swap'
     endif
 endfunction
 
