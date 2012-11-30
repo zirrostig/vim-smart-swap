@@ -1,7 +1,7 @@
 SmartSwap
 =========
 
-Handles vim swap files in a intelligent way
+Handles vim swap files in an intelligent way
 
 This plugin will delete a detected swapfile if the swapfile is older than the
 file being opened or if the swapfile is identical to the file being opened.
