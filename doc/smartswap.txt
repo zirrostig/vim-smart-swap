@@ -1,0 +1,47 @@
+*smartswap.txt*       For Vim version 7.4.    Last change: 2014 April 7
+
+Author: Zachary Stigall
+License: VIM
+
+Intelligently handles VIM's swap files on startup, intercepting the swap file
+detected dialog if the swap file is identical or older than the file being
+opened. 
+
+                                                        *smartswap-purpose*
+The primary purpose of this plugin is to make it so the swap file
+detected dialog actually means the swap file probably has unsaved work in it.
+Whereas before, I almost always just deleted the swap without thinking about
+it, which has resulted in the occasional loss of work.
+
+                                                        *smartswap-explain*
+Smartswap checks two properties of the swap file and if either properties
+passes, tells VIM to remove the swap file. When it does this, the dialog
+prompting the user is never shown. 
+
+The first thing checked is timestamps, assuming the default of enabled, if the
+swap file has an older time stamp than the file being opened it is deleted.
+
+Next assuming the time stamp check failed and that diff check is not disabled,
+a diff of the files is done, and if they are identical, the swap is deleted.
+
+If both of these cases fail the use will then, and only then see the swap file
+detected dialog, knowing that the swap is newer and/or differs from the file
+being opened, and that they should probably inspect the swap for lost work.
+
+=============================================================================
+OPTIONS                                                 *smartswap-options*
+
+Setting an option to 0 will disable the behavior associated with it.
+
+Option                      Default         Behavior ~
+*g:SmartSwap_CheckDate*       1 (enabled)     Controls whether |smartswap| will
+                                            remove the swap if the time stamp
+                                            of the swap file is older than the
+                                            file being opened.
+
+*g:SmartSwap_CheckDiff*       1 (enabled)     Controls whether |smartswap| will
+                                            run a diff of the two, and remove
+                                            the swap file if they are
+                                            identical.
+
+vim:tw=80:ts=4:ft=help:norl
