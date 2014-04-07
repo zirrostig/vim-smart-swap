@@ -1,6 +1,6 @@
 "Author: Zachary Stigall
-"Version: 0.1
-"Last Change: 27 Nov 2012
+"Version: 1.0
+"Last Change: 7 April 2014 (version bump)
 "License: VIM License
 "
 "About: Vim Smart Swap is a plugin that ties into vim's swap file detection and
