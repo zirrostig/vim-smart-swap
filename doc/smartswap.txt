@@ -13,6 +13,7 @@ CONTENTS                                                    *smartswap-contents*
         File modified timestamp check ..................|smartswap-checkdate|
         File diff check ................................|smartswap-checkdiff|
     License ............................................|smartswap-license|
+    Disclaimer .........................................|smartswap-disclaimer|
     Bugs ...............................................|smartswap-bugs|
     Contributing .......................................|smartswap-contributing|
     Changelog ..........................................|smartswap-changelog|
@@ -68,6 +69,13 @@ LICENSE                                                      *smartswap-license*
 
 Smartswap is copyright Zachary Stigall & contributors and licensed under the
 VIM |license|.
+
+==============================================================================
+DISCLAIMER                                                *smartswap-disclaimer*
+
+In no event shall the Copyright Holder or Contributors be liable for any loss
+of data, or any subsequent losses thereafter, as a result of using this
+software.
 
 ==============================================================================
 BUGS                                                            *smartswap-bugs*
