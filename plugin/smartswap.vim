@@ -1,5 +1,5 @@
 "Author: Zachary Stigall
-"Version: 1.0
+"Version: 1.0.0
 "Last Change: 7 April 2014 (version bump)
 "License: VIM License
 "

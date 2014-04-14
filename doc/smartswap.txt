@@ -1,19 +1,35 @@
 *smartswap.txt*       For Vim version 7.4.    Last change: 2014 April 7
 
-Author: Zachary Stigall
-License: VIM
-
 Intelligently handles VIM's swap files on startup, intercepting the swap file
 detected dialog if the swap file is identical or older than the file being
 opened. 
 
-                                                        *smartswap-purpose*
+==============================================================================
+CONTENTS                                                    *smartswap-contents*
+
+    The primary purose of this plugin ..................|smartswap-purpose|
+    What it does and how it does it ....................|smartswap-explain|
+    Configuring ........................................|smartswap-options|
+        File modified timestamp check ..................|smartswap-checkdate|
+        File diff check ................................|smartswap-checkdiff|
+    License ............................................|smartswap-license|
+    Bugs ...............................................|smartswap-bugs|
+    Contributing .......................................|smartswap-contributing|
+    Changelog ..........................................|smartswap-changelog|
+    Credits ............................................|smartswap-credits|
+    
+
+==============================================================================
+PURPOSE                                                      *smartswap-purpose*
+
 The primary purpose of this plugin is to make it so the swap file
 detected dialog actually means the swap file probably has unsaved work in it.
 Whereas before, I almost always just deleted the swap without thinking about
 it, which has resulted in the occasional loss of work.
 
-                                                        *smartswap-explain*
+==============================================================================
+EXPLAIN                                                      *smartswap-explain*
+
 Smartswap checks two properties of the swap file and if either properties
 passes, tells VIM to remove the swap file. When it does this, the dialog
 prompting the user is never shown. 
@@ -28,20 +44,65 @@ If both of these cases fail the use will then, and only then see the swap file
 detected dialog, knowing that the swap is newer and/or differs from the file
 being opened, and that they should probably inspect the swap for lost work.
 
-=============================================================================
-OPTIONS                                                 *smartswap-options*
+==============================================================================
+OPTIONS                                                      *smartswap-options*
+                                                         *smartswap-configuring*
 
 Setting an option to 0 will disable the behavior associated with it.
 
 Option                      Default         Behavior ~
-*g:SmartSwap_CheckDate*       1 (enabled)     Controls whether |smartswap| will
+*g:SmartSwap_CheckDate*       1 (enabled)                    *smartswap-checkdate*
+                                            Controls whether |smartswap| will
                                             remove the swap if the time stamp
                                             of the swap file is older than the
                                             file being opened.
 
-*g:SmartSwap_CheckDiff*       1 (enabled)     Controls whether |smartswap| will
+*g:SmartSwap_CheckDiff*       1 (enabled)                    *smartswap-checkdiff*
+                                            Controls whether |smartswap| will
                                             run a diff of the two, and remove
                                             the swap file if they are
                                             identical.
 
-vim:tw=80:ts=4:ft=help:norl
+==============================================================================
+LICENSE                                                      *smartswap-license*
+
+Smartswap is copyright Zachary Stigall & contributors and licensed under the
+VIM |license|.
+
+==============================================================================
+BUGS                                                            *smartswap-bugs*
+
+Please report any bugs you find to the github issue tracker:
+    https://github.com/zirrostig/vim-smart-swap/issues
+
+==============================================================================
+CONTRIBUTING                                            *smartswap-contributing*
+
+Contributions to |smartswap| are always welcome. 
+
+Fork the project https://github.com/zirrostig/vim-smart-swap and submit a pull
+request with your contribution.
+
+==============================================================================
+CHANGELOG                                                  *smartswap-changelog*
+
+v1.0.0
+    Added Documentation in preparation for telling the internet about it.
+pre1.0.0
+    Got things implemented and used for about a year without changes
+
+==============================================================================
+CREDITS                                                      *smartswap-credits*
+
+Smartswap was originally wrote by Zachary Stigall, and if anyone ever decides
+that they can add some functionality, and they follow through with forking and
+submitting a pull request they will be mentioned below, if they are really
+good people they will update the doc with their changes and add their name
+here so I don't have to :).
+
+Contributors:                                           *smartswap-contributors*
+    ...Crickets...
+
+
+vim:tw=78:ts=4:ft=help:norl
+
